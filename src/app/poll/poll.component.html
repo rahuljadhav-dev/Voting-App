@@ -1,0 +1,55 @@
+<div class="container mt-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center text-primary fw-bold">Create a Poll</h2>
+
+        <!-- Poll Question Input -->
+        <div class="mb-3">
+            <input type="text" [(ngModel)]="newPoll.question" placeholder="Enter poll question"
+                class="form-control border-primary shadow-sm" required>
+        </div>
+
+        <!-- Poll Options -->
+        <div class="options-container mb-3">
+            <div *ngFor="let option of newPoll.options; let i=index; trackBy:trackByIndex" class="input-group mb-2">
+                <input type="text" [(ngModel)]="option.optionText" placeholder="Enter option"
+                    class="form-control border-secondary shadow-sm" required>
+                <button *ngIf="newPoll.options.length > 2" (click)="newPoll.options.splice(i,1)"
+                    class="btn btn-danger shadow-sm">
+                    <i class="bi bi-trash"></i> Remove
+                </button>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-between">
+            <button (click)="addOption()" class="btn btn-outline-danger">
+                <i class="bi bi-plus-lg"></i> Add Option
+            </button>
+            <button (click)="createPoll()" class="btn btn-primary">
+                <i class="bi bi-check-lg"></i> Create Poll
+            </button>
+        </div>
+    </div>
+
+    <!-- Available Polls Section -->
+    <h1 class="mt-5 text-center text-success fw-bold">Available Polls</h1>
+
+    <div *ngFor="let poll of polls" class="card shadow-sm border-0 mt-4">
+        <div class="card-body">
+            <h3 class="text-dark">{{ poll.question }}</h3>
+
+            <!-- Poll Options with Vote Buttons -->
+            <div class="options list-group mt-3">
+                <div *ngFor="let option of poll.options; let i = index" class="mb-2">
+                    <button (click)="vote(poll.id, i)"
+                        class="btn btn-outline-primary w-100 d-flex justify-content-between align-items-center">
+                        <span>{{ option.optionText }}</span>
+                        <span class="badge bg-primary text-white rounded-pill">{{ option.voteCount }} votes</span>
+                    </button>
+                </div>
+
+            </div>
+            <button (click)="deletePoll(poll.id)" class="btn btn-danger">Delete Poll {{poll.id}}</button>
+        </div>
+    </div>
+</div>
